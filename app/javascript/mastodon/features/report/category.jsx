@@ -45,6 +45,7 @@ class Category extends PureComponent {
     const { onNextStep, category } = this.props;
 
     switch(category) {
+    // Hometown: also send reports for "disliked" toots, it's quite unfair to do nothing in this case.
     case 'dislike':
       onNextStep('statuses');
       break;
