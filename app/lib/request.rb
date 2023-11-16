@@ -11,15 +11,7 @@ require 'resolv'
 # Also changes how the read timeout behaves so that it is cumulative (closer
 # to HTTP::Timeout::Global, but still having distinct timeouts for other
 # operation types)
-class PerOperationWithDeadline < HTTP::Timeout::PerOperation
-  READ_DEADLINE = 30
-
-  def initialize(*args)
-    super
-
-    @read_deadline = options.fetch(:read_deadline, READ_DEADLINE)
-  end
-
+class HTTP::Timeout::PerOperation
   def connect(socket_class, host, port, nodelay = false)
     @socket = socket_class.open(host, port)
     @socket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1) if nodelay
@@ -32,7 +24,7 @@ class PerOperationWithDeadline < HTTP::Timeout::PerOperation
 
   # Read data from the socket
   def readpartial(size, buffer = nil)
-    @deadline ||= Process.clock_gettime(Process::CLOCK_MONOTONIC) + @read_deadline
+    @deadline ||= Process.clock_gettime(Process::CLOCK_MONOTONIC) + @read_timeout
 
     timeout = false
     loop do
@@ -41,8 +33,7 @@ class PerOperationWithDeadline < HTTP::Timeout::PerOperation
       return :eof if result.nil?
 
       remaining_time = @deadline - Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      raise HTTP::TimeoutError, "Read timed out after #{@read_timeout} seconds" if timeout
-      raise HTTP::TimeoutError, "Read timed out after a total of #{@read_deadline} seconds" if remaining_time <= 0
+      raise HTTP::TimeoutError, "Read timed out after #{@read_timeout} seconds" if timeout || remaining_time <= 0
       return result if result != :wait_readable
 
       # marking the socket for timeout. Why is this not being raised immediately?
@@ -55,7 +46,7 @@ class PerOperationWithDeadline < HTTP::Timeout::PerOperation
       # timeout. Else, the first timeout was a proper timeout.
       # This hack has to be done because io/wait#wait_readable doesn't provide a value for when
       # the socket is closed by the server, and HTTP::Parser doesn't provide the limit for the chunks.
-      timeout = true unless @socket.to_io.wait_readable([remaining_time, @read_timeout].min)
+      timeout = true unless @socket.to_io.wait_readable(remaining_time)
     end
   end
 end
