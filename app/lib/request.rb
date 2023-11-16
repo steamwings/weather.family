@@ -76,8 +76,9 @@ class Request
     @verb        = verb
     @url         = Addressable::URI.parse(url).normalize
     @http_client = options.delete(:http_client)
-    @options     = options.merge(socket_class: use_proxy? ? ProxySocket : Socket)
+    @allow_local = options.delete(:allow_local)
     @options     = @options.merge(timeout_class: PerOperationWithDeadline, timeout_options: TIMEOUT)
+    @options     = @options.merge(socket_class: use_proxy? || @allow_local ? ProxySocket : Socket)
     @options     = @options.merge(proxy_url) if use_proxy?
     @headers     = {}
 
@@ -200,9 +201,7 @@ class Request
   end
 
   module ClientLimit
-    def body_with_limit(limit = 1.megabyte)
-      raise Mastodon::LengthValidationError if content_length.present? && content_length > limit
-
+    def truncated_body(limit = 1.megabyte)
       if charset.nil?
         encoding = Encoding::BINARY
       else
@@ -219,9 +218,17 @@ class Request
         contents << chunk
         chunk.clear
 
-        raise Mastodon::LengthValidationError if contents.bytesize > limit
+        break if contents.bytesize > limit
       end
 
+      contents
+    end
+
+    def body_with_limit(limit = 1.megabyte)
+      raise Mastodon::LengthValidationError if content_length.present? && content_length > limit
+
+      contents = truncated_body(limit)
+      raise Mastodon::LengthValidationError if contents.bytesize > limit
       contents
     end
   end

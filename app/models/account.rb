@@ -61,9 +61,9 @@ class Account < ApplicationRecord
     trust_level
   )
 
-  USERNAME_RE   = /[a-z0-9_]+([a-z0-9_.-]+[a-z0-9_]+)?/i
-  MENTION_RE    = %r{(?<![=/[:word:]])@((#{USERNAME_RE})(?:@[[:word:].-]+[[:word:]]+)?)}i
-  URL_PREFIX_RE = %r{\Ahttp(s?)://[^/]+}
+  USERNAME_RE   = /[a-z0-9_]+([a-z0-9_\.-]+[a-z0-9_]+)?/i
+  MENTION_RE    = /(?<=^|[^\/[:word:]])@((#{USERNAME_RE})(?:@[[:word:]\.\-]+[[:word:]]+)?)/i
+  URL_PREFIX_RE = /\Ahttp(s?):\/\/[^\/]+/
   USERNAME_ONLY_RE = /\A#{USERNAME_RE}\z/i
 
   include Attachmentable
@@ -84,8 +84,8 @@ class Account < ApplicationRecord
   validates :username, presence: true
   validates_with UniqueUsernameValidator, if: -> { will_save_change_to_username? }
 
-  # Remote user validations
-  validates :username, format: { with: USERNAME_ONLY_RE }, if: -> { !local? && will_save_change_to_username? }
+  # Remote user validations, also applies to internal actors
+  validates :username, format: { with: USERNAME_ONLY_RE }, if: -> { (!local? || actor_type == 'Application') && will_save_change_to_username? }
 
   # Local user validations
   validates :username, format: { with: /\A[a-z0-9_]+\z/i }, length: { maximum: 30 }, if: -> { local? && will_save_change_to_username? && actor_type != 'Application' }
@@ -107,15 +107,15 @@ class Account < ApplicationRecord
   scope :bots, -> { where(actor_type: %w(Application Service)) }
   scope :groups, -> { where(actor_type: 'Group') }
   scope :alphabetic, -> { order(domain: :asc, username: :asc) }
-  scope :matches_username, ->(value) { where('lower((username)::text) LIKE lower(?)', "#{value}%") }
+  scope :matches_username, ->(value) { where(arel_table[:username].matches("#{value}%")) }
   scope :matches_display_name, ->(value) { where(arel_table[:display_name].matches("#{value}%")) }
   scope :matches_domain, ->(value) { where(arel_table[:domain].matches("%#{value}%")) }
   scope :without_unapproved, -> { left_outer_joins(:user).remote.or(left_outer_joins(:user).merge(User.approved.confirmed)) }
   scope :searchable, -> { without_unapproved.without_suspended.where(moved_to_account_id: nil) }
   scope :discoverable, -> { searchable.without_silenced.where(discoverable: true).left_outer_joins(:account_stat) }
   scope :followable_by, ->(account) { joins(arel_table.join(Follow.arel_table, Arel::Nodes::OuterJoin).on(arel_table[:id].eq(Follow.arel_table[:target_account_id]).and(Follow.arel_table[:account_id].eq(account.id))).join_sources).where(Follow.arel_table[:id].eq(nil)).joins(arel_table.join(FollowRequest.arel_table, Arel::Nodes::OuterJoin).on(arel_table[:id].eq(FollowRequest.arel_table[:target_account_id]).and(FollowRequest.arel_table[:account_id].eq(account.id))).join_sources).where(FollowRequest.arel_table[:id].eq(nil)) }
-  scope :by_recent_status, -> { includes(:account_stat).merge(AccountStat.order('last_status_at DESC NULLS LAST')).references(:account_stat) }
-  scope :by_recent_sign_in, -> { order(Arel.sql('users.current_sign_in_at DESC NULLS LAST')) }
+  scope :by_recent_status, -> { order(Arel.sql('(case when account_stats.last_status_at is null then 1 else 0 end) asc, account_stats.last_status_at desc, accounts.id desc')) }
+  scope :by_recent_sign_in, -> { order(Arel.sql('(case when users.current_sign_in_at is null then 1 else 0 end) asc, users.current_sign_in_at desc, accounts.id desc')) }
   scope :popular, -> { order('account_stats.followers_count desc') }
   scope :by_domain_and_subdomains, ->(domain) { where(domain: domain).or(where(arel_table[:domain].matches("%.#{domain}"))) }
   scope :not_excluded_by_account, ->(account) { where.not(id: account.excluded_from_timeline_account_ids) }
@@ -341,9 +341,15 @@ class Account < ApplicationRecord
 
   def save_with_optional_media!
     save!
-  rescue ActiveRecord::RecordInvalid
-    self.avatar = nil
-    self.header = nil
+  rescue ActiveRecord::RecordInvalid => e
+    errors = e.record.errors.errors
+    errors.each do |err|
+      if err.attribute == :avatar
+        self.avatar = nil
+      elsif err.attribute == :header
+        self.header = nil
+      end
+    end
 
     save!
   end
@@ -507,7 +513,7 @@ class Account < ApplicationRecord
         <<-SQL.squish
           SELECT
             accounts.*,
-            (count(f.id) + 1) * #{BOOST} * ts_rank_cd(#{TEXTSEARCH}, to_tsquery('simple', :tsquery), 32) AS rank,
+            #{BOOST} * ts_rank_cd(#{TEXTSEARCH}, to_tsquery('simple', :tsquery), 32) AS rank,
             count(f.id) AS followed
           FROM accounts
           LEFT OUTER JOIN follows AS f ON (accounts.id = f.account_id AND f.target_account_id = :id) OR (accounts.id = f.target_account_id AND f.account_id = :id)

@@ -775,7 +775,7 @@ const startWorker = async (workerId) => {
             // constructing the regular expression
             Object.keys(req.cachedFilters).forEach((key) => {
               req.cachedFilters[key].regexp = new RegExp(req.cachedFilters[key].keywords.map(([keyword, whole_word]) => {
-                let expr = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');;
+                let expr = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
                 if (whole_word) {
                   if (/^[\w]/.test(expr)) {
