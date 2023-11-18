@@ -266,16 +266,6 @@
   "filter_modal.added.review_and_configure_title": "Filter settings",
   "filter_modal.added.settings_link": "settings page",
   "filter_modal.added.short_explanation": "This post has been added to the following filter category: {title}.",
-||||||| 03b0f3ac8
-  "filter_modal.added.context_mismatch_explanation": "This filter category does not apply to the context in which you have accessed this post. If you want the post to be filtered in this context too, you will have to edit the filter.",
-  "filter_modal.added.context_mismatch_title": "Context mismatch!",
-  "filter_modal.added.expired_explanation": "This filter category has expired, you will need to change the expiration date for it to apply.",
-  "filter_modal.added.expired_title": "Expired filter!",
-  "filter_modal.added.review_and_configure": "To review and further configure this filter category, go to the {settings_link}.",
-  "filter_modal.added.review_and_configure_title": "Filter settings",
-  "filter_modal.added.settings_link": "settings page",
-  "filter_modal.added.short_explanation": "This post has been added to the following filter category: {title}.",
-=======
   "filter_modal.added.context_mismatch_explanation": "Nid yw'r categori hidlo hwn yn berthnasol i'r cyd-destun yr ydych wedi cyrchu'r postiad hwn ynddo. Os ydych chi am i'r postiad gael ei hidlo yn y cyd-destun hwn hefyd, bydd yn rhaid i chi olygu'r hidlydd.",
   "filter_modal.added.context_mismatch_title": "Diffyg cyfatebiaeth cyd-destun!",
   "filter_modal.added.expired_explanation": "Mae'r categori hidlydd hwn wedi dod i ben, bydd angen i chi newid y dyddiad dod i ben er mwyn iddo fod yn berthnasol.",
@@ -284,7 +274,6 @@
   "filter_modal.added.review_and_configure_title": "Gosodiadau hidlo",
   "filter_modal.added.settings_link": "tudalen gosodiadau",
   "filter_modal.added.short_explanation": "Mae'r postiad hwn wedi'i ychwanegu at y categori hidlo canlynol: {title}.",
->>>>>>> v4.1.0rc1
   "filter_modal.added.title": "Hidlydd wedi'i ychwanegu!",
   "filter_modal.select_filter.context_mismatch": "nid yw'n berthnasol i'r cyd-destun hwn",
   "filter_modal.select_filter.expired": "daeth i ben",
