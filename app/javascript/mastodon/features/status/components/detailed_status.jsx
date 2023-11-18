@@ -299,6 +299,7 @@ class DetailedStatus extends ImmutablePureComponent {
     }
 
     const {statusContentProps, hashtagBar} = getHashtagBarForStatus(status);
+    const expanded = !status.get('hidden')
 
     return (
       <div style={outerStyle}>
@@ -324,7 +325,7 @@ class DetailedStatus extends ImmutablePureComponent {
 
           {status.get('activity_pub_type') === 'Article' ? null : media}
 
-          {hashtagBar}
+          {expanded && hashtagBar}
 
           <div className='detailed-status__meta'>
             <a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener noreferrer'>
