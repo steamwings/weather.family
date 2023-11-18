@@ -48,35 +48,6 @@ class TranslationService::LibreTranslate < TranslationService
     data = Oj.load(json, mode: :strict)
     raise UnexpectedResponseError unless data.is_a?(Hash)
 
-<<<<<<< HEAD
-  def request(text, source_language, target_language)
-    body = Oj.dump(q: text, source: source_language.presence || 'auto', target: target_language, format: 'html', api_key: @api_key)
-    req = Request.new(:post, "#{@base_url}/translate", body: body, allow_local: true)
-    req.add_headers('Content-Type': 'application/json')
-    req
-  end
-
-  def transform_response(str, source_language)
-    json = Oj.load(str, mode: :strict)
-
-    raise UnexpectedResponseError unless json.is_a?(Hash)
-
-    Translation.new(text: Sanitize.fragment(json['translatedText'], Sanitize::Config::MASTODON_STRICT), detected_source_language: source_language, provider: 'LibreTranslate')
-||||||| 61c5dfb92
-  def request(text, source_language, target_language)
-    body = Oj.dump(q: text, source: source_language.presence || 'auto', target: target_language, format: 'html', api_key: @api_key)
-    req = Request.new(:post, "#{@base_url}/translate", body: body, allow_local: true)
-    req.add_headers('Content-Type': 'application/json')
-    req
-  end
-
-  def transform_response(str, source_language)
-    json = Oj.load(str, mode: :strict)
-
-    raise UnexpectedResponseError unless json.is_a?(Hash)
-
-    Translation.new(text: json['translatedText'], detected_source_language: source_language, provider: 'LibreTranslate')
-=======
     data['translatedText'].map.with_index do |text, index|
       Translation.new(
         text: text,
@@ -84,7 +55,6 @@ class TranslationService::LibreTranslate < TranslationService
         provider: 'LibreTranslate'
       )
     end
->>>>>>> v4.2.0-beta1
   rescue Oj::ParseError
     raise UnexpectedResponseError
   end
