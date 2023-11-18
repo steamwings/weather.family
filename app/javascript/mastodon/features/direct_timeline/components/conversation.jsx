@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
 import { HotKeys } from 'react-hotkeys';
 
 import AttachmentList from 'mastodon/components/attachment_list';

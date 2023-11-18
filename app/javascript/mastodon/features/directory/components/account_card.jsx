@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 
 import classNames from 'classnames';

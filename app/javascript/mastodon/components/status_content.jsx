@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
+
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +11,7 @@ import { connect } from 'react-redux';
 
 import { Icon }  from 'mastodon/components/icon';
 import PollContainer from 'mastodon/containers/poll_container';
-import { autoPlayGif, languages as preloadedLanguages } from 'mastodon/initial_state';
+import { autoPlayGif, languages as preloadedLanguages, expandUsernames } from 'mastodon/initial_state';
 
 const MAX_HEIGHT = 706; // 22px * 32 (+ 2px padding at the top)
 
@@ -283,11 +284,9 @@ class StatusContent extends PureComponent {
       let mentionsPlaceholder = '';
 
       const mentionLinks = status.get('mentions').map(item => (
-        <Permalink to={`/@${item.get('acct')}`} href={item.get('url')} key={item.get('id')} className='status-link mention'>
-          @<span className={item.get('acct') === item.get('username') ? 'fc_mention_local' : 'fc_mention_remote'}>
-            {expandUsernames ? item.get('acct') : item.get('username')}
-          </span>
-        </Permalink>
+        <Link to={`/@${item.get('acct')}`} href={item.get('url')} key={item.get('id')} className='status-link mention'>
+          @<span>{expandUsernames ? item.get('acct') : item.get('username')}</span>
+        </Link>
       )).reduce((aggregate, item) => [...aggregate, item, ' '], []);
 
       const toggleText = hidden ? <FormattedMessage id='status.show_more' defaultMessage='Show more' /> : <FormattedMessage id='status.show_less' defaultMessage='Show less' />;
@@ -297,7 +296,7 @@ class StatusContent extends PureComponent {
       }
 
       const output = [
-        <div className={classNames} ref={this.setRef} tabIndex={0} onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
+        <div key={"__yells_at_linter__"} className={classNames} ref={this.setRef} tabIndex={0} onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
           <p style={{ marginBottom: hidden && status.get('mentions').isEmpty() ? '0px' : null }}>
             <span dangerouslySetInnerHTML={spoilerContent} className='translate' lang={language} />
             {' '}
@@ -306,7 +305,8 @@ class StatusContent extends PureComponent {
 
           {mentionsPlaceholder}
 
-          <div tabIndex={!hidden ? 0 : null} className={`status__content__text ${!hidden ? 'status__content__text--visible' : ''} ${status.get('activity_pub_type') === 'Article' ? 'article-type' : ''} translate`} lang={lang} dangerouslySetInnerHTML={content} />
+          <div tabIndex={!hidden ? 0 : null} className={`status__content__text ${!hidden ? 'status__content__text--visible' : ''} ${status.get('activity_pub_type') === 'Article' ? 'article-type' : ''} translate`} lang={language} dangerouslySetInnerHTML={content} />
+
           {!hidden && poll}
           {translateButton}
         </div>,

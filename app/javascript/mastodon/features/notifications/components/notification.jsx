@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
+
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 

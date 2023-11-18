@@ -1,4 +1,3 @@
-import ColumnHeader from 'mastodon/components/column_header';
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
@@ -14,6 +13,7 @@ import spring from 'react-motion/lib/spring';
 
 import { openModal } from 'mastodon/actions/modal';
 import Column from 'mastodon/components/column';
+import ColumnHeader from 'mastodon/components/column_header';
 import { Icon }  from 'mastodon/components/icon';
 import { logOut } from 'mastodon/utils/log_out';
 

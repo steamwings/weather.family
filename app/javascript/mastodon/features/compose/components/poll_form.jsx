@@ -7,7 +7,9 @@ import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
 import Toggle from 'react-toggle';
+
 import AutosuggestInput from 'mastodon/components/autosuggest_input';
 import { Icon }  from 'mastodon/components/icon';
 import { IconButton } from 'mastodon/components/icon_button';
@@ -163,7 +165,7 @@ class PollForm extends ImmutablePureComponent {
           {options.map((title, i) => <Option title={title} lang={lang} key={i} index={i} onChange={onChangeOption} onRemove={onRemoveOption} isPollMultiple={isMultiple} onToggleMultiple={this.handleToggleMultiple} autoFocus={i === autoFocusIndex} {...other} />)}
         </ul>
         <div className='is-multiple-toggle'>
-          <Toggle className='is-multiple-checkbox' checked={isMultiple} onChange={this.handleToggleMultiple}/>
+          <Toggle className='is-multiple-checkbox' checked={isMultiple} onChange={this.handleToggleMultiple} />
           <span className='is-multiple-toggle__label'>
             <FormattedMessage id='poll.is_multiple' defaultMessage='Multiple choice' />
           </span>
