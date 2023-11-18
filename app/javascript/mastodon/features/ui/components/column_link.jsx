@@ -46,7 +46,7 @@ ColumnLink.propTypes = {
   badge: PropTypes.node,
   transparent: PropTypes.bool,
   button: PropTypes.bool,
-  onClick: PropTypes.function,
+  onClick: PropTypes.func,
 };
 
 export default ColumnLink;
