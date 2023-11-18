@@ -41,7 +41,10 @@ module Paperclip
         @output_options['vframes'] = 1
       when 'mp4'
         unless eligible_to_passthrough?(metadata)
-          bitrate = (metadata.width * metadata.height * 30 * BITS_PER_PIXEL) / 1_000
+          size_limit_in_bits = MediaAttachment::VIDEO_LIMIT * 8
+          desired_bitrate = (metadata.width * metadata.height * 30 * BITS_PER_PIXEL).floor
+          maximum_bitrate = (size_limit_in_bits / metadata.duration).floor - 192_000 # Leave some space for the audio stream
+          bitrate = [desired_bitrate, maximum_bitrate].min
 
           if high_vfr?(metadata)
             @output_options['vsync'] = 'vfr'
