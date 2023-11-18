@@ -18,7 +18,6 @@ import { IconButton } from './icon_button';
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: '{number, plural, one {Hide image} other {Hide images}}' },
-  no_descriptive_text: { id: 'media.no_descriptive_text', defaultMessage: 'No descriptive text was provided for this media.' },
 });
 
 class Item extends PureComponent {
@@ -33,7 +32,6 @@ class Item extends PureComponent {
     displayWidth: PropTypes.number,
     visible: PropTypes.bool.isRequired,
     autoplay: PropTypes.bool,
-    noDescriptionTitle: PropTypes.string,
   };
 
   static defaultProps = {
@@ -63,7 +61,7 @@ class Item extends PureComponent {
     return this.props.autoplay || autoPlayGif;
   }
 
-  hoverToPlay () {
+  hoverToPlay() {
     const { attachment } = this.props;
     return !this.getAutoPlay() && attachment.get('type') === 'gifv';
   }
@@ -87,12 +85,12 @@ class Item extends PureComponent {
     this.setState({ loaded: true });
   };
 
-  render () {
+  render() {
     const { attachment, lang, index, size, standalone, displayWidth, visible } = this.props;
 
     let badges = [], thumbnail;
 
-    let width  = 50;
+    let width = 50;
     let height = 100;
 
     if (size === 1) {
@@ -103,7 +101,8 @@ class Item extends PureComponent {
       height = 50;
     }
 
-    if (attachment.get('description')?.length > 0) {
+    const hasMediaDescription = !attachment.get('description')?.length > 0;
+    if (hasMediaDescription) {
       badges.push(<span key='alt' className='media-gallery__gifv__label'>ALT</span>);
     }
 
@@ -111,8 +110,8 @@ class Item extends PureComponent {
 
     if (attachment.get('type') === 'unknown') {
       return (
-        <div className={classNames('media-gallery__item', { standalone, 'media-gallery__item--tall': height === 100, 'media-gallery__item--wide': width === 100 })} key={attachment.get('id')}>
-          <a className={`media-gallery__item-thumbnail ${!attachment.get('description') && 'media-missing-description'}`} href={attachment.get('remote_url') || attachment.get('url')} style={{ cursor: 'pointer' }} title={description} lang={lang} target='_blank' rel='noopener noreferrer'>
+        <div className={classNames('media-gallery__item', { standalone, 'media-gallery__item--tall': height === 100, 'media-gallery__item--wide': width === 100, 'media-missing-description': !hasMediaDescription })} key={attachment.get('id')}>
+          <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url') || attachment.get('url')} style={{ cursor: 'pointer' }} title={description} lang={lang} target='_blank' rel='noopener noreferrer'>
             <Blurhash
               hash={attachment.get('blurhash')}
               className='media-gallery__preview'
@@ -122,31 +121,30 @@ class Item extends PureComponent {
         </div>
       );
     } else if (attachment.get('type') === 'image') {
-      const previewUrl   = attachment.get('preview_url');
+      const previewUrl = attachment.get('preview_url');
       const previewWidth = attachment.getIn(['meta', 'small', 'width']);
 
-      const originalUrl   = attachment.get('url');
+      const originalUrl = attachment.get('url');
       const originalWidth = attachment.getIn(['meta', 'original', 'width']);
 
       const hasSize = typeof originalWidth === 'number' && typeof previewWidth === 'number';
 
       const srcSet = hasSize ? `${originalUrl} ${originalWidth}w, ${previewUrl} ${previewWidth}w` : null;
-      const sizes  = hasSize && (displayWidth > 0) ? `${displayWidth * (width / 100)}px` : null;
+      const sizes = hasSize && (displayWidth > 0) ? `${displayWidth * (width / 100)}px` : null;
 
       const focusX = attachment.getIn(['meta', 'focus', 'x']) || 0;
       const focusY = attachment.getIn(['meta', 'focus', 'y']) || 0;
-      const x      = ((focusX /  2) + .5) * 100;
-      const y      = ((focusY / -2) + .5) * 100;
+      const x = ((focusX / 2) + .5) * 100;
+      const y = ((focusY / -2) + .5) * 100;
 
       thumbnail = (
         <a
-          className={`media-gallery__item-thumbnail ${!attachment.get('description') && 'media-missing-description'}`}
+          className={classNames("media-gallery__item-thumbnail", { "media-missing-description": !hasMediaDescription })}
           href={attachment.get('remote_url') || originalUrl}
           onClick={this.handleClick}
           target='_blank'
           rel='noopener noreferrer'
         >
-          { !attachment.get('description') && <IconButton className='media-gallery__item-no-description media__no-description-icon' title={this.props.noDescriptionTitle} icon='exclamation-triangle' style={{ right: `calc(4px + ${(left === 'auto' ? '0px' : left)})`, bottom: `calc(4px + ${(top === 'auto' ? '0px' : top)})` }} overlay /> }
           <img
             src={previewUrl}
             srcSet={srcSet}
@@ -167,7 +165,7 @@ class Item extends PureComponent {
       thumbnail = (
         <div className={classNames('media-gallery__gifv', { autoplay: autoPlay })}>
           <video
-            className={`media-gallery__item-gifv-thumbnail ${!attachment.get('description') && 'media-missing-description'}`}
+            className={classNames("media-gallery__item-gifv-thumbnail", { "media-missing-description": !hasMediaDescription })}
             aria-label={description}
             title={description}
             lang={lang}
@@ -181,10 +179,6 @@ class Item extends PureComponent {
             loop
             muted
           />
-          <div className='media-gallery__gifv__label__container'>
-            <span className='media-gallery__gifv__label'>GIF</span>
-            { !attachment.get('description') && <span className='media-gallery__gifv__label__no-description'><IconButton title={this.props.noDescriptionTitle} icon='exclamation-triangle' overlay /></span> }
-          </div>
         </div>
       );
     }
@@ -234,15 +228,15 @@ class MediaGallery extends PureComponent {
     width: this.props.defaultWidth,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  UNSAFE_componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!is(nextProps.media, this.props.media) && nextProps.visible === undefined) {
       this.setState({ visible: displayMedia !== 'hide_all' && !nextProps.sensitive || displayMedia === 'show_all' });
     } else if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
@@ -278,7 +272,7 @@ class MediaGallery extends PureComponent {
     }
   };
 
-  _setDimensions () {
+  _setDimensions() {
     const width = this.node.offsetWidth;
 
     // offsetWidth triggers a layout, so only calculate when we need to
@@ -296,7 +290,7 @@ class MediaGallery extends PureComponent {
     return media.size === 1 && media.getIn([0, 'meta', 'small', 'aspect']);
   }
 
-  render () {
+  render() {
     const { media, lang, intl, sensitive, defaultWidth, autoplay } = this.props;
     const { visible } = this.state;
     const width = this.state.width || defaultWidth;
@@ -311,14 +305,13 @@ class MediaGallery extends PureComponent {
       style.aspectRatio = '3 / 2';
     }
 
-    const size       = media.take(4).size;
-    const uncached   = media.every(attachment => attachment.get('type') === 'unknown');
-    const noDescriptionTitle = intl.formatMessage(messages.no_descriptive_text);
+    const size = media.take(4).size;
+    const uncached = media.every(attachment => attachment.get('type') === 'unknown');
 
-    if (standalone && this.isFullSizeEligible()) {
-      children = <Item standalone autoplay={autoplay} onClick={this.handleClick} attachment={media.get(0)} lang={lang} displayWidth={width} visible={visible} noDescriptionTitle={noDescriptionTitle} />;
+    if (this.isFullSizeEligible()) {
+      children = <Item standalone autoplay={autoplay} onClick={this.handleClick} attachment={media.get(0)} lang={lang} displayWidth={width} visible={visible} />;
     } else {
-      children = media.take(4).map((attachment, i) => <Item key={attachment.get('id')} autoplay={autoplay} onClick={this.handleClick} attachment={attachment} index={i} lang={lang} size={size} displayWidth={width} visible={visible || uncached} noDescriptionTitle={noDescriptionTitle} />);
+      children = media.take(4).map((attachment, i) => <Item key={attachment.get('id')} autoplay={autoplay} onClick={this.handleClick} attachment={attachment} index={i} lang={lang} size={size} displayWidth={width} visible={visible || uncached} />);
     }
 
     if (uncached) {
