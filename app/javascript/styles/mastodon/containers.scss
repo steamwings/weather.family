@@ -197,7 +197,7 @@
     margin-bottom: 10px;
   }
 
-  @media screen and (max-width: 738px) {
+  @media screen and (width <= 738px) {
     grid-template-columns: minmax(0, 50%) minmax(0, 50%);
 
     .landing-page__call-to-action {
@@ -378,7 +378,7 @@
         color: $primary-text-color;
       }
 
-      @media screen and (max-width: 550px) {
+      @media screen and (width <= 550px) {
         &.optional {
           display: none;
         }
@@ -492,7 +492,7 @@
       justify-content: flex-start;
 
       &::before {
-        content: "";
+        content: '';
         display: block;
         background: lighten($ui-base-color, 4%);
         position: absolute;
@@ -522,7 +522,7 @@
         }
       }
 
-      @media screen and (max-width: 600px) {
+      @media screen and (width <= 600px) {
         margin-top: 0;
         background: lighten($ui-base-color, 4%);
         border-radius: 0 0 4px 4px;
@@ -543,7 +543,7 @@
             border-radius: 4px;
           }
 
-          @media screen and (max-width: 360px) {
+          @media screen and (width <= 360px) {
             display: none;
           }
         }
@@ -587,7 +587,7 @@
         }
       }
 
-      @media screen and (max-width: 600px) {
+      @media screen and (width <= 600px) {
         margin-left: 15px;
         display: flex;
         justify-content: space-between;
@@ -648,7 +648,7 @@
 
           &::after {
             display: block;
-            content: "";
+            content: '';
             position: absolute;
             bottom: 0;
             left: 0;
@@ -845,11 +845,11 @@
       margin-bottom: 10px;
       max-width: 33.333%;
 
-      @media screen and (max-width: 900px) {
+      @media screen and (width <= 900px) {
         max-width: 50%;
       }
 
-      @media screen and (max-width: 600px) {
+      @media screen and (width <= 600px) {
         max-width: 100%;
       }
     }
