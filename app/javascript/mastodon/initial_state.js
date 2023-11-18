@@ -57,6 +57,7 @@
  * @property {string} display_media
  * @property {string} domain
  * @property {boolean=} expand_spoilers
+ * @property {boolean=} expand_usernames
  * @property {boolean} limited_federation_mode
  * @property {string} locale
  * @property {string | null} mascot
@@ -89,6 +90,7 @@
  * @property {InitialStateLanguage[]} languages
  * @property {boolean=} critical_updates_pending
  * @property {InitialStateMeta} meta
+ * @property {number} max_toot_chars
  */
 
 const element = document.getElementById('initial-state');
