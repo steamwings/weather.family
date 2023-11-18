@@ -9,19 +9,19 @@ module Mastodon
     end
 
     def minor
-      1
+      2
     end
 
     def patch
-      10
+      0
     end
 
     def flags
-      ''
+      ENV.fetch('MASTODON_VERSION_FLAGS', '-beta1')
     end
 
     def suffix
-      '+hometown-1.1.1'
+      ENV.fetch('MASTODON_VERSION_SUFFIX', '')
     end
 
     def to_a

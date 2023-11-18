@@ -36,18 +36,21 @@ class Sanitize
       node['class'] = class_list.join(' ')
     end
 
+    TRANSLATE_TRANSFORMER = lambda do |env|
+      node = env[:node]
+      node.remove_attribute('translate') unless node['translate'] == 'no'
+    end
+
     UNSUPPORTED_HREF_TRANSFORMER = lambda do |env|
       return unless env[:node_name] == 'a'
 
       current_node = env[:node]
 
-      scheme = begin
-        if current_node['href'] =~ Sanitize::REGEX_PROTOCOL
-          Regexp.last_match(1).downcase
-        else
-          :relative
-        end
-      end
+      scheme = if current_node['href'] =~ Sanitize::REGEX_PROTOCOL
+                 Regexp.last_match(1).downcase
+               else
+                 :relative
+               end
 
       current_node.replace(Nokogiri::XML::Text.new(current_node.text, current_node.document)) unless LINK_PROTOCOLS.include?(scheme)
     end
@@ -57,28 +60,21 @@ class Sanitize
 
       current_node = env[:node]
 
-      case env[:node_name]
-      when 'li'
-        current_node.traverse do |node|
-          next unless %w(p ul ol li).include?(node.name)
-
-          node.add_next_sibling('<br>') if node.next_sibling
-          node.replace(node.children) unless node.text?
-        end
-      else
-        current_node.name = 'p'
-      end
+      current_node.name = 'strong'
+      current_node.wrap('<p></p>')
     end
 
     MASTODON_STRICT ||= freeze_config(
-      elements: %w(p br span a abbr del pre blockquote code b strong i em h1 h2 h3 h4 h5 ul ol li img),
+      elements: %w(p br span a abbr del pre blockquote code b strong i em h1 h2 h3 h4 h5 ul ol li img u),
 
       attributes: {
-        'a'          => %w(href rel class title),
-        'span'       => %w(class),
         'abbr'       => %w(title),
         'blockquote' => %w(cite),
         'img'        => %w(src alt),
+        'a'          => %w(href rel class translate title),
+        'span'       => %w(class translate),
+        'ol'         => %w(start reversed),
+        'li'         => %w(value),
       },
 
       add_attributes: {
@@ -95,6 +91,7 @@ class Sanitize
 
       transformers: [
         CLASS_WHITELIST_TRANSFORMER,
+        TRANSLATE_TRANSFORMER,
         UNSUPPORTED_ELEMENTS_TRANSFORMER,
         UNSUPPORTED_HREF_TRANSFORMER,
       ]
@@ -109,6 +106,7 @@ class Sanitize
         'iframe' => %w(allowfullscreen frameborder height scrolling src width),
         'source' => %w(src type),
         'video'  => %w(controls height loop width),
+        'div'    => [:data]
       },
 
       protocols: {

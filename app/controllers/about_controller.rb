@@ -13,14 +13,7 @@ class AboutController < ApplicationController
   skip_before_action :require_functional!, only: [:more, :terms]
 
   def show
-    flash.now[:notice] = I18n.t('about.instance_actor_flash') if params[:instance_actor]
-
-    toc_generator = TOCGenerator.new(@instance_presenter.extended_description)
-
-    @rules             = Rule.ordered
-    @contents          = markdown.render(toc_generator.html)
-    @table_of_contents = toc_generator.toc
-    @blocks            = DomainBlock.with_user_facing_limitations.by_severity if display_blocks?
+    expires_in(15.seconds, public: true, stale_while_revalidate: 30.seconds, stale_if_error: 1.day) unless user_signed_in?
   end
 
   def terms; end
