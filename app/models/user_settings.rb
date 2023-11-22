@@ -16,6 +16,11 @@ class UserSettings
   setting :default_sensitive, default: false
   setting :default_privacy, default: nil, in: %w(public unlisted private)
 
+  # Hometown-specific: Opt-out of RSS feeds for public posts
+  setting :norss, default: false
+  # Hometown: New posts should federate by default
+  setting :default_federation, default: true
+
   setting_inverse_alias :indexable, :noindex
 
   namespace :web do
@@ -32,6 +37,9 @@ class UserSettings
     setting :expand_content_warnings, default: false
     setting :display_media, default: 'default', in: %w(default show_all hide_all)
     setting :auto_play, default: false
+
+    # Hometown: Show full username (including domain) for remote users
+    setting :expand_usernames, default: true
   end
 
   namespace :notification_emails do
