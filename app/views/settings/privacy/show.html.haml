@@ -20,6 +20,10 @@
   .fields-group
     = f.input :unlocked, as: :boolean, wrapper: :with_label
 
+  = f.simple_fields_for :settings, current_user.settings do |ff|
+    .fields-group
+      = ff.input :norss, wrapper: :with_label, label: I18n.t('simple_form.labels.defaults.setting_norss')
+
   %h4= t('privacy.search')
 
   %p.lead= t('privacy.search_hint_html')

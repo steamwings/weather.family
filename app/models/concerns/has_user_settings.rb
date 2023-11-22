@@ -135,11 +135,16 @@ module HasUserSettings
     settings['web.display_media'] == 'hide_all'
   end
 
+  ## --- Hometown-specific settings from here on ---
   def setting_expand_usernames
-    settings['web.auto_play']
+    settings['web.expand_usernames']
   end
 
   def setting_default_federation
     settings['default_federation']
+  end
+
+  def setting_norss
+    settings['norss']
   end
 end
