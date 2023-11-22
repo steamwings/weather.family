@@ -47,6 +47,10 @@ module Paperclip
           maximum_bitrate = (size_limit_in_bits / duration).floor - 192_000 # Leave some space for the audio stream
           bitrate = [desired_bitrate, maximum_bitrate].min
 
+          @output_options['b:v']     = bitrate
+          @output_options['maxrate'] = bitrate + 192_000
+          @output_options['bufsize'] = bitrate * 5
+
           if high_vfr?(metadata)
             @output_options['vsync'] = 'vfr'
             @output_options['r'] = @vfr_threshold
