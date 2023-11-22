@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PlainTextFormatter
-  include ActionView::Helpers::TextHelper
-
   NEWLINE_TAGS_RE = %r{(<br />|<br>|</p>)+}
 
   attr_reader :text, :local

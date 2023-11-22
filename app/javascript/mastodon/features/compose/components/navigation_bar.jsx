@@ -23,7 +23,7 @@ export default class NavigationBar extends ImmutablePureComponent {
     const username = this.props.account.get('acct')
     const url = this.props.account.get('url')
     return (
-      <div classNamesName='navigation-bar'>
+      <div className='navigation-bar'>
         <Link to={`/@${username}`} href={url}>
           <span style={{ display: 'none' }}>{username}</span>
           <Avatar account={this.props.account} size={46} />
