@@ -18,7 +18,7 @@ const messages = defineMessages({
 });
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
-  onLogout () {
+  onLogout() {
     dispatch(openModal({
       modalType: 'CONFIRM',
       modalProps: {
@@ -52,7 +52,7 @@ class LinkFooter extends PureComponent {
     return false;
   };
 
-  render () {
+  render() {
     const { signedIn, permissions } = this.context.identity;
     const { multiColumn } = this.props;
 
@@ -110,7 +110,7 @@ class LinkFooter extends PureComponent {
           {DividingCircle}
           <a href={source_url} rel='noopener noreferrer' target='_blank'><FormattedMessage id='footer.source_code' defaultMessage='View source code' /></a>
           {DividingCircle}
-          <span class='version'>v{version}</span>
+          <span className='version'>v{version}</span>
         </p>
       </div>
     );

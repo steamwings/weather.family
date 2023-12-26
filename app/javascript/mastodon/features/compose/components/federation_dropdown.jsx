@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import Overlay from 'react-overlays/Overlay';
 
-import { Icon }  from 'mastodon/components/icon';
+import { Icon } from 'mastodon/components/icon';
 
 import { IconButton } from '../../../components/icon_button';
 
@@ -47,32 +47,32 @@ class FederationDropdownMenu extends PureComponent {
     });
     let element = null;
 
-    switch(e.key) {
-    case 'Escape':
-      this.props.onClose();
-      break;
-    case 'Enter':
-      this.handleClick(e);
-      break;
-    case 'ArrowDown':
-      element = this.node.childNodes[index + 1] || this.node.firstChild;
-      break;
-    case 'ArrowUp':
-      element = this.node.childNodes[index - 1] || this.node.lastChild;
-      break;
-    case 'Tab':
-      if (e.shiftKey) {
-        element = this.node.childNodes[index - 1] || this.node.lastChild;
-      } else {
+    switch (e.key) {
+      case 'Escape':
+        this.props.onClose();
+        break;
+      case 'Enter':
+        this.handleClick(e);
+        break;
+      case 'ArrowDown':
         element = this.node.childNodes[index + 1] || this.node.firstChild;
-      }
-      break;
-    case 'Home':
-      element = this.node.firstChild;
-      break;
-    case 'End':
-      element = this.node.lastChild;
-      break;
+        break;
+      case 'ArrowUp':
+        element = this.node.childNodes[index - 1] || this.node.lastChild;
+        break;
+      case 'Tab':
+        if (e.shiftKey) {
+          element = this.node.childNodes[index - 1] || this.node.lastChild;
+        } else {
+          element = this.node.childNodes[index + 1] || this.node.firstChild;
+        }
+        break;
+      case 'Home':
+        element = this.node.firstChild;
+        break;
+      case 'End':
+        element = this.node.lastChild;
+        break;
     }
 
     if (element) {
@@ -92,13 +92,13 @@ class FederationDropdownMenu extends PureComponent {
     this.props.onChange(value);
   };
 
-  componentDidMount () {
+  componentDidMount() {
     document.addEventListener('click', this.handleDocumentClick, { capture: true });
     document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
     if (this.focusedItem) this.focusedItem.focus({ preventScroll: true });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     document.removeEventListener('click', this.handleDocumentClick, { capture: true });
     document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
@@ -111,7 +111,7 @@ class FederationDropdownMenu extends PureComponent {
     this.focusedItem = c;
   };
 
-  render () {
+  render() {
     const { style, items, value } = this.props;
 
     return (
@@ -181,10 +181,10 @@ class FederationDropdown extends PureComponent {
   };
 
   handleKeyDown = e => {
-    switch(e.key) {
-    case 'Escape':
-      this.handleClose();
-      break;
+    switch (e.key) {
+      case 'Escape':
+        this.handleClose();
+        break;
     }
   };
 
@@ -195,11 +195,11 @@ class FederationDropdown extends PureComponent {
   };
 
   handleButtonKeyDown = (e) => {
-    switch(e.key) {
-    case ' ':
-    case 'Enter':
-      this.handleMouseDown();
-      break;
+    switch (e.key) {
+      case ' ':
+      case 'Enter':
+        this.handleMouseDown();
+        break;
     }
   };
 
@@ -217,7 +217,7 @@ class FederationDropdown extends PureComponent {
     this.props.onChange(value);
   };
 
-  UNSAFE_componentWillMount () {
+  UNSAFE_componentWillMount() {
     const { intl: { formatMessage } } = this.props;
 
     this.options = [
@@ -238,7 +238,7 @@ class FederationDropdown extends PureComponent {
     this.setState({ placement: state.placement });
   };
 
-  render () {
+  render() {
     const { value, container, disabled, intl } = this.props;
     const { open, placement } = this.state;
 
