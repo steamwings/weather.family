@@ -84,10 +84,7 @@ class Sanitize
         },
       },
 
-      protocols: {
-        'a' => { 'href' => HTTP_PROTOCOLS },
-        'blockquote' => { 'cite' => HTTP_PROTOCOLS },
-      },
+      protocols: {},
 
       transformers: [
         CLASS_WHITELIST_TRANSFORMER,
@@ -106,7 +103,6 @@ class Sanitize
         'iframe' => %w(allowfullscreen frameborder height scrolling src width),
         'source' => %w(src type),
         'video' => %w(controls height loop width),
-        'div' => [:data],
       },
 
       protocols: {
