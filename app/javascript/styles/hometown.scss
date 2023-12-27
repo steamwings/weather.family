@@ -32,6 +32,12 @@
   }
 }
 
+// app/views/layouts/auth.html.haml
+// Increase the default font size for the page title on the login screen.
+.logo-container h1 a {
+  font-size: 1.5rem;
+}
+
 // app/javascript/mastodon/features/home_timeline/components/explore_prompt.tsx
 // Hide the "this is your home base" banner.
 .dismissable-banner:has([href='/explore']) {
