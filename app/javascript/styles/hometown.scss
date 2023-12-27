@@ -4,3 +4,30 @@
 .account__header__tabs__name a {
   color: inherit;
 }
+
+// app/javascript/mastodon/features/ui/components/navigation_panel.jsx
+// We hide the logo from the sidebar. It's kept in the JSX, to keep the modifications of the React
+// codebase as small as possible.
+.navigation-panel__logo {
+  display: none;
+}
+
+// app/views/layouts/admin.html.haml
+// The logo is set to a size of 100x100px. We don't have a funny/beautiful icon for hometown in the
+// admin sidebar, therefore we unset the dimensions [1], center the link [2] and unset the color for it [3].
+.admin-wrapper .sidebar .logo {
+  // 1
+  width: unset;
+  height: unset;
+
+  // 2
+  h2 {
+    text-align: center;
+    font-size: 1.25rem;
+  }
+
+  // 3
+  .brand {
+    color: inherit;
+  }
+}
