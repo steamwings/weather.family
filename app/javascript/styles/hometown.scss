@@ -1,1 +1,6 @@
-
+// app/javascript/mastodon/features/account_timeline/components/header.jsx
+// Because we provide a link to the profile instead of a plain <span>, we override
+// the color to ensure it doesn't use the accent color.
+.account__header__tabs__name a {
+  color: inherit;
+}
