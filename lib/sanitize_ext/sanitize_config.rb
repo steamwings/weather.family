@@ -68,13 +68,13 @@ class Sanitize
       elements: %w(p br span a abbr del pre blockquote code b strong i em h1 h2 h3 h4 h5 ul ol li img u),
 
       attributes: {
-        'abbr'       => %w(title),
+        'abbr' => %w(title),
         'blockquote' => %w(cite),
-        'img'        => %w(src alt),
-        'a'          => %w(href rel class translate title),
-        'span'       => %w(class translate),
-        'ol'         => %w(start reversed),
-        'li'         => %w(value),
+        'img' => %w(src alt),
+        'a' => %w(href rel class translate title),
+        'span' => %w(class translate),
+        'ol' => %w(start reversed),
+        'li' => %w(value),
       },
 
       add_attributes: {
@@ -85,7 +85,7 @@ class Sanitize
       },
 
       protocols: {
-        'a'          => { 'href' => HTTP_PROTOCOLS },
+        'a' => { 'href' => HTTP_PROTOCOLS },
         'blockquote' => { 'cite' => HTTP_PROTOCOLS },
       },
 
@@ -101,16 +101,16 @@ class Sanitize
       elements: %w(audio embed iframe source video),
 
       attributes: {
-        'audio'  => %w(controls),
-        'embed'  => %w(height src type width),
+        'audio' => %w(controls),
+        'embed' => %w(height src type width),
         'iframe' => %w(allowfullscreen frameborder height scrolling src width),
         'source' => %w(src type),
-        'video'  => %w(controls height loop width),
-        'div'    => [:data]
+        'video' => %w(controls height loop width),
+        'div' => [:data],
       },
 
       protocols: {
-        'embed'  => { 'src' => HTTP_PROTOCOLS },
+        'embed' => { 'src' => HTTP_PROTOCOLS },
         'iframe' => { 'src' => HTTP_PROTOCOLS },
         'source' => { 'src' => HTTP_PROTOCOLS },
       },

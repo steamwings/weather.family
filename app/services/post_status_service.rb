@@ -122,13 +122,11 @@ class PostStatusService < BaseService
        spoiler_text&.include?(':local_only')
       return true
     end
+
     if local_only.nil?
-      if in_reply_to && in_reply_to.local_only
-        return true
-      end
-      if in_reply_to && !in_reply_to.local_only
-        return false
-      end
+      return true if in_reply_to&.local_only
+      return false if in_reply_to && !in_reply_to.local_only
+
       return !federation_setting
     end
     local_only
@@ -139,9 +137,7 @@ class PostStatusService < BaseService
     Trends.tags.register(@status)
     LinkCrawlWorker.perform_async(@status.id)
     DistributionWorker.perform_async(@status.id)
-    unless @status.local_only?
-      ActivityPub::DistributionWorker.perform_async(@status.id)
-    end
+    ActivityPub::DistributionWorker.perform_async(@status.id) unless @status.local_only?
     PollExpirationNotifyWorker.perform_at(@status.poll.expires_at, @status.poll.id) if @status.poll
   end
 

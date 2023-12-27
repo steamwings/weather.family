@@ -129,15 +129,15 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
         conversation: conversation_from_uri(@object['conversation']),
         media_attachment_ids: process_attachments.take(4).map(&:id),
         poll: process_poll,
-        activity_pub_type: @object['type']
+        activity_pub_type: @object['type'],
       }
     end
   end
 
   class Handler < ::Ox::Sax
-    attr_reader :srcs
-    attr_reader :alts
-    def initialize(block)
+    attr_reader :srcs, :alts
+
+    def initialize(_block)
       @stack = []
       @srcs = []
       @alts = {}
@@ -147,7 +147,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       @stack << [element_name, {}]
     end
 
-    def end_element(element_name)
+    def end_element(_element_name)
       self_name, self_attributes = @stack[-1]
       if self_name == :img && !self_attributes[:src].nil?
         @srcs << self_attributes[:src]
@@ -163,7 +163,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def process_inline_images
-    proc = Proc.new { |name| puts name }
+    proc = proc { |name| puts name }
     handler = Handler.new(proc)
     Ox.sax_parse(handler, @object['content'])
     handler.srcs.each do |src|
@@ -436,7 +436,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     return article_format(@object['content']) if @object['content'].present? && @object['type'] == 'Article'
 
-    return @status_parser.text || ''
+    @status_parser.text || ''
   end
 
   def text_from_name
