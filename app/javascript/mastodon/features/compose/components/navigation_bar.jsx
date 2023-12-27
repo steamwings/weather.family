@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 
 import { FormattedMessage } from 'react-intl';
 
-import { Link } from 'react-router-dom';
-
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import { Permalink } from 'mastodon/components/permalink';
 
 import { Avatar } from '../../../components/avatar';
 
@@ -24,16 +24,16 @@ export default class NavigationBar extends ImmutablePureComponent {
     const url = this.props.account.get('url')
     return (
       <div className='navigation-bar'>
-        <Link to={`/@${username}`} href={url}>
+        <Permalink to={`/@${username}`} href={url}>
           <span style={{ display: 'none' }}>{username}</span>
           <Avatar account={this.props.account} size={46} />
-        </Link>
+        </Permalink>
 
         <div className='navigation-bar__profile'>
           <span>
-            <Link to={`/@${username}`} href={url}>
+            <Permalink to={`/@${username}`} href={url}>
               <strong className='navigation-bar__profile-account'>@{username}</strong>
-            </Link>
+            </Permalink>
           </span>
 
           <span>
