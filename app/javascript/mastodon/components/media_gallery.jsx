@@ -101,7 +101,7 @@ class Item extends PureComponent {
       height = 50;
     }
 
-    const hasMediaDescription = !attachment.get('description')?.length > 0;
+    const hasMediaDescription = attachment.get('description')?.length > 0;
     if (hasMediaDescription) {
       badges.push(<span key='alt' className='media-gallery__gifv__label'>ALT</span>);
     }
