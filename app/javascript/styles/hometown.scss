@@ -52,3 +52,12 @@
   height: 23.1429px;
   line-height: 23.15px;
 }
+
+// app/javascript/mastodon/features/compose/components/poll_form.jsx
+// Add some custom styling for the "multiple choice" selection button
+.compose-form__poll-wrapper .is-multiple-toggle {
+  padding: 10px; // same as the poll options above it
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; // same as the padding
+}

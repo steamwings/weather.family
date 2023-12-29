@@ -164,6 +164,8 @@ class PollForm extends ImmutablePureComponent {
         <ul>
           {options.map((title, i) => <Option title={title} lang={lang} key={i} index={i} onChange={onChangeOption} onRemove={onRemoveOption} isPollMultiple={isMultiple} onToggleMultiple={this.handleToggleMultiple} autoFocus={i === autoFocusIndex} {...other} />)}
         </ul>
+
+        {/* Hometown: Clicking the poll checkboxes is not accessible at all, therefore we add a dedicated toggle. */}
         <div className='is-multiple-toggle'>
           <Toggle className='is-multiple-checkbox' checked={isMultiple} onChange={this.handleToggleMultiple} />
           <span className='is-multiple-toggle__label'>
