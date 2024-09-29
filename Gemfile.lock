@@ -236,6 +236,8 @@ GEM
     discard (1.2.1)
       activerecord (>= 4.2, < 8)
     docile (1.4.0)
+    dockerfile-rails (1.6.19)
+      rails (>= 3.0.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     doorkeeper (5.6.6)
@@ -471,6 +473,8 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.3)
       mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
+    nokogiri (1.16.6-x86_64-linux)
       racc (~> 1.4)
     nsa (0.3.0)
       activesupport (>= 4.2, < 7.2)
@@ -812,6 +816,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   active_model_serializers (~> 0.10)
@@ -842,6 +847,7 @@ DEPENDENCIES
   devise-two-factor (~> 4.1)
   devise_pam_authenticatable2 (~> 9.2)
   discard (~> 1.2)
+  dockerfile-rails (>= 1.6)
   doorkeeper (~> 5.6)
   dotenv-rails (~> 2.8)
   ed25519 (~> 1.3)
