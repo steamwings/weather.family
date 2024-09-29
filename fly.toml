@@ -1,0 +1,35 @@
+app = 'weather-family'
+primary_region = 'iad'
+console_command = 'bash'
+
+# initial deploy only
+[deploy]
+  release_command = "bundle exec rails db:schema:load db:seed"
+
+#[deploy]
+#  release_command = "bin/rails db:migrate"
+
+[env]
+  DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+  RAILS_ENV = "production"
+  RAILS_LOG_TO_STDOUT = "enabled"
+  MAX_THREADS = "5"
+
+[build]
+
+[http_service]
+  #internal_port = 3000
+  #force_https = true # renable later
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 20
+    hard_limit = 25
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
