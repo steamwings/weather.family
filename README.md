@@ -8,7 +8,7 @@ This repo is a fork of the [Hometown](https://github.com/hometown-fork/hometown/
 - Fly.io-related changes
   - Dockerfile updated for multiple processes using [overmind](https://github.com/DarthSim/overmind), based on [the setup here](https://github.com/tmm1/flyapp-mastodon)
   - files for deployment (most importantly, [fly.toml](./fly.toml))
-- ...I'll try to remember to document other tweaks here
+- Fix `streaming` to allow IPv6 Redis addresses (7f26541)
 
 ## License
 
