@@ -5,7 +5,10 @@ This repo is a fork of the [Hometown](https://github.com/hometown-fork/hometown/
 ## Differences from Hometown
 
 - All posts are [local-only](https://github.com/hometown-fork/hometown/wiki/Local-only-posting) for all profiles _by default_. This can be turned off in user settings like normal, but makes it so that new users don't need to know what federation is.
-- ...I'll try to remember to document other tweaks here
+- Fly.io-related changes
+  - Dockerfile updated for multiple processes using [overmind](https://github.com/DarthSim/overmind), based on [the setup here](https://github.com/tmm1/flyapp-mastodon)
+  - files for deployment (most importantly, [fly.toml](./fly.toml))
+- Fix `streaming` to allow IPv6 Redis addresses (7f26541)
 
 ## License
 

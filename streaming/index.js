@@ -136,6 +136,7 @@ const redisConfigFromEnv = (env) => {
   const redisParams = {
     host: env.REDIS_HOST || '127.0.0.1',
     port: env.REDIS_PORT || 6379,
+    family: 0, // ref: https://github.com/mastodon/mastodon/pull/31229
     db: env.REDIS_DB || 0,
     password: env.REDIS_PASSWORD || undefined,
   };

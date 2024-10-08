@@ -100,6 +100,26 @@ WORKDIR /opt/mastodon
 # Precompile assets
 RUN OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile
 
-# Set the work dir and the container entry point
-ENTRYPOINT ["/usr/bin/tini", "--"]
 EXPOSE 3000 4000
+
+# Diverge here from official Dockerfile, based on https://github.com/tmm1/flyapp-mastodon/blob/main/Dockerfile
+USER root
+
+RUN mkdir -p /var/cache/apt/archives/partial && \
+  apt-get install -y --no-install-recommends tmux
+
+# Releases: https://github.com/caddyserver/caddy/releases/
+RUN wget "https://github.com/caddyserver/caddy/releases/download/v2.8.4/caddy_2.8.4_linux_amd64.deb" -O caddy.deb && \
+  dpkg -i caddy.deb
+
+USER mastodon
+
+# Releases: https://github.com/DarthSim/overmind/releases
+RUN wget "https://github.com/DarthSim/overmind/releases/download/v2.5.1/overmind-v2.5.1-linux-amd64.gz" -O overmind.gz && \
+  gunzip overmind.gz && \
+  chmod +x overmind
+
+ADD Procfile Caddyfile /opt/mastodon/
+
+ENTRYPOINT []
+CMD ["./overmind", "start"]
