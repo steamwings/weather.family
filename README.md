@@ -4,11 +4,17 @@ This repo is a fork of the [Hometown](https://github.com/hometown-fork/hometown/
 
 ## Differences from Hometown
 
-- All posts are [local-only](https://github.com/hometown-fork/hometown/wiki/Local-only-posting) for all profiles _by default_. This can be turned off in user settings like normal, but makes it so that new users don't need to know what federation is.
+- All posts are [local-only](https://github.com/hometown-fork/hometown/wiki/Local-only-posting) for all profiles _by default_. This can be turned off in user settings like normal, but makes it so that new users don't need to know what federation is. ([aff697ab](https://github.com/steamwings/weather.family/commit/aff697ab2f8b0260185d5916242764bd32dada7f))
 - Fly.io-related changes
   - Dockerfile updated for multiple processes using [overmind](https://github.com/DarthSim/overmind), based on [the setup here](https://github.com/tmm1/flyapp-mastodon)
   - files for deployment (most importantly, [fly.toml](./fly.toml))
-- Fix `streaming` to allow IPv6 Redis addresses [7f26541](https://github.com/steamwings/weather.family/pull/1/commits/7f26541a87539d3738fef4d265e44ca5d64eca68)
+- Fix `streaming` to allow IPv6 Redis addresses ([7f26541a](https://github.com/steamwings/weather.family/pull/1/commits/7f26541a87539d3738fef4d265e44ca5d64eca68))
+
+
+## Deploy
+
+Main service: `fly deploy`
+Search service: `fly deploy -a weather-family-search -c fly.search.toml`
 
 ## License
 

@@ -1,0 +1,28 @@
+app = 'weather-family-search'
+primary_region = 'iad'
+console_command = 'bash'
+
+[build]
+  image = 'opensearchproject/opensearch:latest'
+
+[deploy]
+  strategy = 'bluegreen'
+
+[env]
+  OPENSEARCH_INITIAL_ADMIN_PASSWORD = 't3Mpor@ryP&ssw0rd'
+  "discovery.type" = 'single-node'
+
+[[vm]]
+  memory = '2gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[checks]
+  [checks.yellow_or_green]
+    grace_period = "30s"
+    interval = "15s"
+    method = "get"
+    path = "/health?wait_for_status=yellow"
+    port = 9200
+    timeout = "10s"
+    type = "http"
