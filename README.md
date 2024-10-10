@@ -4,7 +4,7 @@ This repo is a fork of the [Hometown](https://github.com/hometown-fork/hometown/
 
 ## Differences from Hometown
 
-- All posts are [local-only](https://github.com/hometown-fork/hometown/wiki/Local-only-posting) for all profiles _by default_. This can be turned off in user settings like normal, but makes it so that new users don't need to know what federation is.
+- All posts are [local-only](https://github.com/hometown-fork/hometown/wiki/Local-only-posting) for all profiles _by default_. This can be turned off in user settings like normal, but makes it so that new users don't need to know what federation is. ([aff697ab](https://github.com/steamwings/weather.family/commit/aff697ab2f8b0260185d5916242764bd32dada7f))
 - Fly.io-related changes
   - Dockerfile updated for multiple processes using [overmind](https://github.com/DarthSim/overmind), based on [the setup here](https://github.com/tmm1/flyapp-mastodon)
   - files for deployment (most importantly, [fly.toml](./fly.toml))
