@@ -9,7 +9,8 @@ console_command = 'bash'
   RAILS_LOG_TO_STDOUT = "enabled"
   MAX_THREADS = "5"
 
-[build]
+[deploy]
+  strategy = "bluegreen"
 
 [[statics]]
   guest_path = "/opt/mastodon/public"
@@ -51,6 +52,6 @@ console_command = 'bash'
     timeout = "2s"
 
 [[vm]]
-  memory = '2gb'
+  memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
