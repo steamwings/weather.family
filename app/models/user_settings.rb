@@ -14,12 +14,12 @@ class UserSettings
   setting :show_application, default: true
   setting :default_language, default: nil
   setting :default_sensitive, default: false
-  setting :default_privacy, default: nil, in: %w(public unlisted private)
+  setting :default_privacy, default: 'private', in: %w(public unlisted private)
 
   # Hometown-specific: Opt-out of RSS feeds for public posts
   setting :norss, default: false
-  # Hometown: New posts should federate by default
-  setting :default_federation, default: true
+  # New posts should not federate by default
+  setting :default_federation, default: false
 
   setting_inverse_alias :indexable, :noindex
 
