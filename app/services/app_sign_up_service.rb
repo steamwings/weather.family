@@ -39,7 +39,7 @@ class AppSignUpService < BaseService
   end
 
   def account_params
-    @params.slice(:username)
+    @params.slice(:username).merge(locked: true)
   end
 
   def invite_request_params

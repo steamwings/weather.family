@@ -4,9 +4,10 @@ This repo is a fork of the [Hometown](https://github.com/hometown-fork/hometown/
 
 ## Differences from Hometown
 
-- All posts are [local-only](https://github.com/hometown-fork/hometown/wiki/Local-only-posting) for all profiles _by default_. This can be turned off in user settings like normal, but makes it so that new users don't need to know what federation is and don't accidentally post publicly.
-  - Federation off by default ([aff697ab](https://github.com/steamwings/weather.family/commit/aff697ab2f8b0260185d5916242764bd32dada7f))
-  - Private (follower-only) posts by default ([32a2db1](https://github.com/steamwings/weather.family/commit/32a2db14a2fd6cb8c420c6b2689b17d118aa75dc))
+- Privacy is default. This ensures that new users don't need to know what federation is, don't (easily) post publicly by accident, and don't get followed by strangers unless they explicitly allow it.
+  - Federation off by default: all posts are [local-only](https://github.com/hometown-fork/hometown/wiki/Local-only-posting) by default
+  - Private (follower-only) posts by default
+  - Locked accounts by default
 - Fly.io-related changes
   - Dockerfile updated for multiple processes using [overmind](https://github.com/DarthSim/overmind), based on [the setup here](https://github.com/tmm1/flyapp-mastodon)
   - files for deployment (most importantly, [fly.toml](./fly.toml))
