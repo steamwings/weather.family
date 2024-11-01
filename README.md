@@ -1,4 +1,4 @@
-# Weather.Family
+# weather.family
 
 This repo is a fork of the [Hometown](https://github.com/hometown-fork/hometown/) fork of [Mastodon](https://github.com/tootsuite/mastodon), customized for my personal instance.
 
@@ -9,6 +9,21 @@ This repo is a fork of the [Hometown](https://github.com/hometown-fork/hometown/
   - Dockerfile updated for multiple processes using [overmind](https://github.com/DarthSim/overmind), based on [the setup here](https://github.com/tmm1/flyapp-mastodon)
   - files for deployment (most importantly, [fly.toml](./fly.toml))
 - Fix `streaming` to allow IPv6 Redis addresses [7f26541](https://github.com/steamwings/weather.family/pull/1/commits/7f26541a87539d3738fef4d265e44ca5d64eca68)
+
+## Deploying with fly.io
+
+Main app
+
+```sh
+fly deploy
+```
+
+DB
+```sh
+# verify image! (ATOW: flyio/postgres-flex:16.4)
+fly image show --app weather-family-db
+fly deploy --app weather-family-db --config fly.db.toml --image <image>
+```
 
 ## License
 
