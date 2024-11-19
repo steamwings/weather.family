@@ -1,3 +1,16 @@
 :8080
+
+# For cloud object storage
+@assets {
+  path /cache/*
+  path /accounts/*
+  path /media_attachments/*
+}
+
+# This is for caching, not obfuscation
+reverse_proxy @assets https://weather-fam-tigris-0.fly.storage.tigris.dev {
+  header_up Host "weather-fam-tigris-0"
+}
+
 reverse_proxy :3000
 reverse_proxy /api/v1/streaming/* :4000
