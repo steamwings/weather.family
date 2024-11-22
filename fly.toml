@@ -34,8 +34,8 @@ console_command = 'bash'
 
   [services.concurrency]
     type = "connections"
-    hard_limit = 25
-    soft_limit = 20
+    hard_limit = 30
+    soft_limit = 12
 
   [[services.tcp_checks]]
     grace_period = "1s"
@@ -52,6 +52,6 @@ console_command = 'bash'
     timeout = "2s"
 
 [[vm]]
-  memory = '2gb'
+  memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
