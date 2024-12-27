@@ -34,7 +34,7 @@ primary_region = 'iad'
   internal_port = 5433
   auto_start_machines = true
   auto_stop_machines = 'suspend'
-  min_machines_running = 0
+  min_machines_running = 1
 
   [[services.ports]]
     port = 5433
@@ -43,7 +43,7 @@ primary_region = 'iad'
   [services.concurrency]
     type = 'connections'
     hard_limit = 100
-    soft_limit = 25
+    soft_limit = 20
 
 [checks]
   [checks.pg]
