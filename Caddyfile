@@ -5,6 +5,7 @@
   path /cache/*
   path /accounts/*
   path /media_attachments/*
+  path /site_uploads/*
 }
 
 # This is for caching, not obfuscation
