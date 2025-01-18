@@ -21,7 +21,7 @@ console_command = 'bash'
   protocol = "tcp"
   auto_stop_machines = "suspend"
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
 
   [[services.ports]]
     handlers = ["http"]
@@ -34,7 +34,7 @@ console_command = 'bash'
 
   [services.concurrency]
     type = "connections"
-    hard_limit = 100
+    hard_limit = 300
     soft_limit = 30
 
   [[services.tcp_checks]]
