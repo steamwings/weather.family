@@ -22,7 +22,7 @@ DB
 ```sh
 # verify image! (ATOW: flyio/postgres-flex:16.4)
 fly image show --app weather-family-db2
-fly deploy --app weather-family-db2 --config fly.db.toml --image <image>
+fly deploy --app weather-family-db2 --image <image>
 ```
 
 ## License
