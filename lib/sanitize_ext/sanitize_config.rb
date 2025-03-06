@@ -65,7 +65,7 @@ class Sanitize
     end
 
     MASTODON_STRICT ||= freeze_config(
-      elements: %w(p br span a del pre blockquote code b strong u i em ul ol li abbr h1 h2 h3 h4 h5 img),
+      elements: %w(p br span a del s pre blockquote code b strong u i em ul ol li abbr h1 h2 h3 h4 h5 img),
 
       attributes: {
         'abbr' => %w(title),
