@@ -13,7 +13,7 @@ module Mastodon
     end
 
     def patch
-      10
+      17
     end
 
     def default_prerelease
@@ -29,7 +29,7 @@ module Mastodon
     end
 
     def hometown_version
-      'hometown-1.1.1'
+      'hometown-1.1.2'
     end
 
     def to_a
