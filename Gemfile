@@ -207,3 +207,6 @@ gem 'hcaptcha', '~> 7.1'
 gem 'mail', '~> 2.8'
 
 gem "dockerfile-rails", ">= 1.6", :group => :development
+
+gem 'sentry-ruby'
+gem 'sentry-rails'
